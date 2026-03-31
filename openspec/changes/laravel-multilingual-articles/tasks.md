@@ -24,9 +24,9 @@
 
 ## 4. Seeders
 
-- [ ] 4.1 Create `SiteLanguageSeeder` to seed at least `en` (English) and `et` (Estonian) into `site_languages`
-- [ ] 4.2 Create `ArticleSeeder` with at least 2 predefined articles: one with `visibility = public` and one with `visibility = private`, each with translations in at least one language
-- [ ] 4.3 Wire seeders in `DatabaseSeeder` and run `php artisan db:seed` to verify
+- [x] 4.1 Create `SiteLanguageSeeder` to seed at least `en` (English) and `et` (Estonian) into `site_languages`
+- [x] 4.2 Create `ArticleSeeder` with at least 2 predefined articles: one with `visibility = public` and one with `visibility = private`, each with translations in at least one language
+- [x] 4.3 Wire seeders in `DatabaseSeeder` and run `php artisan db:seed` to verify
 
 ## 5. Service Layer
 
