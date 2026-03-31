@@ -11,10 +11,10 @@
 
 ## 2. Database Migrations
 
-- [ ] 2.1 Create migration for `site_languages` table (`language_id` PK, `language_code` varchar(2), `language_name` varchar(45), timestamps)
-- [ ] 2.2 Create migration for `articles` table (`article_id` PK, `node_type` enum, `visibility` enum, `created_at`, `updated_at`, `deleted_at`)
-- [ ] 2.3 Create migration for `article_translations` table with all specified columns, FK to `articles.article_id`, FK to `site_languages.language_code`, and unique index on `(path, language_code)`
-- [ ] 2.4 Run `php artisan migrate` and verify all three tables are created correctly
+- [x] 2.1 Create migration for `site_languages` table (`language_id` PK, `language_code` varchar(2), `language_name` varchar(45), timestamps)
+- [x] 2.2 Create migration for `articles` table (`article_id` PK, `node_type` enum, `visibility` enum, `created_at`, `updated_at`, `deleted_at`)
+- [x] 2.3 Create migration for `article_translations` table with all specified columns, FK to `articles.article_id`, FK to `site_languages.language_code`, and unique index on `(path, language_code)`
+- [x] 2.4 Run `php artisan migrate` and verify all three tables are created correctly
 
 ## 3. Eloquent Models
 
