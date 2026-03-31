@@ -70,23 +70,23 @@
 
 ## 9. Feature Tests
 
-- [ ] 9.1 Create `tests/Feature/ArticleTest.php` with `RefreshDatabase` trait
-- [ ] 9.2 Write test: article list returns articles sorted by `updated_at` DESC by default
-- [ ] 9.3 Write test: filter by `title` returns only matching articles
-- [ ] 9.4 Write test: filter by `status` returns only matching articles
-- [ ] 9.5 Write test: filter by `language_code` returns only matching articles
-- [ ] 9.6 Write test: filter by `node_type` returns only articles with matching node_type
-- [ ] 9.7 Write test: filter by `updated_at_from` and `updated_at_to` returns articles in range
-- [ ] 9.8 Write test: combined filters narrow results correctly
-- [ ] 9.9 Write test: pagination returns correct `per_page` count and metadata
-- [ ] 9.10 Write test: retrieve public article by path without API key succeeds
-- [ ] 9.11 Write test: retrieve private article by path without API key returns 403/404
-- [ ] 9.12 Write test: retrieve private article by path with valid API key returns 200
-- [ ] 9.13 Write test: retrieve article with invalid API key returns 401
-- [ ] 9.14 Write test: create article with valid data returns 201 and persists to DB
-- [ ] 9.15 Write test: create article with invalid data returns 422
-- [ ] 9.16 Write test: update article with valid data returns 200 and updates DB
-- [ ] 9.17 Run `php artisan test` and ensure all tests pass
+- [x] 9.1 Create `tests/Feature/ArticleTest.php` with `RefreshDatabase` trait
+- [x] 9.2 Write test: article list returns articles sorted by `updated_at` DESC by default
+- [x] 9.3 Write test: filter by `title` returns only matching articles
+- [x] 9.4 Write test: filter by `status` returns only matching articles
+- [x] 9.5 Write test: filter by `language_code` returns only matching articles
+- [x] 9.6 Write test: filter by `node_type` returns only articles with matching node_type
+- [x] 9.7 Write test: filter by `updated_at_from` and `updated_at_to` returns articles in range
+- [x] 9.8 Write test: combined filters narrow results correctly
+- [x] 9.9 Write test: pagination returns correct `per_page` count and metadata
+- [x] 9.10 Write test: retrieve public article by path without API key succeeds
+- [x] 9.11 Write test: retrieve private article by path without API key returns 403/404
+- [x] 9.12 Write test: retrieve private article by path with valid API key returns 200
+- [x] 9.13 Write test: retrieve article with invalid API key returns 401
+- [x] 9.14 Write test: create article with valid data returns 201 and persists to DB
+- [x] 9.15 Write test: create article with invalid data returns 422
+- [x] 9.16 Write test: update article with valid data returns 200 and updates DB
+- [x] 9.17 Run `php artisan test` and ensure all tests pass
 
 ## 10. Documentation
 

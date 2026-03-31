@@ -14,15 +14,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Public article list – no API key required; service-level visibility enforced
-Route::get('/articles', [ArticleController::class, 'index']);
+// Article list – optional API key; service-level visibility enforced
+Route::middleware('api.key.optional')
+    ->get('/articles', [ArticleController::class, 'index']);
 
-// Article by path – optional API key; service-level visibility enforced
-Route::get('/articles/by-path/{path}', [ArticleController::class, 'showByPath'])
+// Article by path – optional API key; valid key grants private access
+Route::middleware('api.key.optional')
+    ->get('/articles/by-path/{path}', [ArticleController::class, 'showByPath'])
     ->where('path', '.*');
 
-// Article by ID – no forced authentication; private articles accessible with API key
-Route::get('/articles/{id}', [ArticleController::class, 'show']);
+// Article by ID – optional API key; private articles accessible with valid key
+Route::middleware('api.key.optional')
+    ->get('/articles/{id}', [ArticleController::class, 'show']);
 
 // Protected routes – API key required
 Route::middleware('api.key')->group(function () {
