@@ -30,14 +30,14 @@
 
 ## 5. Service Layer
 
-- [ ] 5.1 Create `app/Services/ArticleService.php` with method `list(array $filters): LengthAwarePaginator` for filtered, paginated, sorted article list
-- [ ] 5.2 Implement filtering in `ArticleService::list()`: `title` (LIKE), `node_type`, `status`, `language_code`, `updated_at_from`, `updated_at_to` on `article_translations.updated_at`
-- [ ] 5.3 Implement default sort of `article_translations.updated_at` DESC in `ArticleService::list()`
-- [ ] 5.4 Add `ArticleService::getByPath(string $path, bool $isPrivate): ArticleTranslation` to retrieve a translation by path, enforcing visibility for public requests
-- [ ] 5.5 Add `ArticleService::getById(int $id): Article` to retrieve an article with all its translations
-- [ ] 5.6 Add `ArticleService::create(array $data): Article` to persist a new article and its translation
-- [ ] 5.7 Add `ArticleService::update(int $id, array $data): Article` to update an existing article and/or translation
-- [ ] 5.8 Bind `ArticleService` in the service container (or use direct instantiation in controller constructor)
+- [x] 5.1 Create `app/Services/ArticleService.php` with method `list(array $filters): LengthAwarePaginator` for filtered, paginated, sorted article list
+- [x] 5.2 Implement filtering in `ArticleService::list()`: `title` (LIKE), `node_type`, `status`, `language_code`, `updated_at_from`, `updated_at_to` on `article_translations.updated_at`
+- [x] 5.3 Implement default sort of `article_translations.updated_at` DESC in `ArticleService::list()`
+- [x] 5.4 Add `ArticleService::getByPath(string $path, bool $isPrivate): ArticleTranslation` to retrieve a translation by path, enforcing visibility for public requests
+- [x] 5.5 Add `ArticleService::getById(int $id): Article` to retrieve an article with all its translations
+- [x] 5.6 Add `ArticleService::create(array $data): Article` to persist a new article and its translation
+- [x] 5.7 Add `ArticleService::update(int $id, array $data): Article` to update an existing article and/or translation
+- [x] 5.8 Bind `ArticleService` in the service container (or use direct instantiation in controller constructor)
 
 ## 6. Middleware
 
