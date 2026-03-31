@@ -54,19 +54,19 @@
 
 ## 8. API Controller & Routes
 
-- [ ] 8.1 Create `app/Http/Controllers/Api/ArticleController.php` with constructor injecting `ArticleService`
-- [ ] 8.2 Implement `ArticleController::index(ListArticleRequest $request)` — returns paginated list via `ArticleService::list()`
-- [ ] 8.3 Implement `ArticleController::showByPath(Request $request, string $path)` — returns article translation by path, using visibility flag from API key middleware
-- [ ] 8.4 Implement `ArticleController::show(Request $request, int $id)` — returns single article with all translations
-- [ ] 8.5 Implement `ArticleController::store(StoreArticleRequest $request)` — creates article via `ArticleService::create()`, returns HTTP 201
-- [ ] 8.6 Implement `ArticleController::update(UpdateArticleRequest $request, int $id)` — updates article via `ArticleService::update()`, returns HTTP 200
-- [ ] 8.7 Register API routes in `routes/api.php`:
+- [x] 8.1 Create `app/Http/Controllers/Api/ArticleController.php` with constructor injecting `ArticleService`
+- [x] 8.2 Implement `ArticleController::index(ListArticleRequest $request)` — returns paginated list via `ArticleService::list()`
+- [x] 8.3 Implement `ArticleController::showByPath(Request $request, string $path)` — returns article translation by path, using visibility flag from API key middleware
+- [x] 8.4 Implement `ArticleController::show(Request $request, int $id)` — returns single article with all translations
+- [x] 8.5 Implement `ArticleController::store(StoreArticleRequest $request)` — creates article via `ArticleService::create()`, returns HTTP 201
+- [x] 8.6 Implement `ArticleController::update(UpdateArticleRequest $request, int $id)` — updates article via `ArticleService::update()`, returns HTTP 200
+- [x] 8.7 Register API routes in `routes/api.php`:
   - `GET /api/articles` (public, with `CheckApiKey` optional behavior)
   - `GET /api/articles/by-path/{path}` (CheckApiKey middleware, visibility filtered on service level)
   - `GET /api/articles/{id}` (CheckApiKey required for private access)
   - `POST /api/articles` (CheckApiKey required)
   - `PUT /api/articles/{id}` (CheckApiKey required)
-- [ ] 8.8 Ensure all JSON responses follow REST conventions (consistent structure with `data`, `message`, pagination metadata)
+- [x] 8.8 Ensure all JSON responses follow REST conventions (consistent structure with `data`, `message`, pagination metadata)
 
 ## 9. Feature Tests
 
