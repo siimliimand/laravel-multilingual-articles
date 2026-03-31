@@ -1,66 +1,342 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravel Multilingual Articles API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A RESTful API backend built with Laravel 10+ for managing multilingual articles. Supports public/private visibility, filtering, sorting, and pagination. Containerized with Docker Compose (PHP-FPM, Nginx, MariaDB).
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Prerequisites
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- [Docker](https://docs.docker.com/get-docker/) (v20+)
+- [Docker Compose](https://docs.docker.com/compose/install/) (v2+)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+No local PHP or Composer installation is required — everything runs inside Docker containers.
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Installation
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+1. **Clone the repository**
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+    ```bash
+    git clone git@github.com:siimliimand/laravel-multilingual-articles.git
+    cd laravel-multilingual-articles
+    ```
 
-## Laravel Sponsors
+2. **Copy the environment file**
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+    ```bash
+    cp .env.example .env
+    ```
 
-### Premium Partners
+3. **Configure the environment**
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+    Edit `.env` and set the required values:
 
-## Contributing
+    ```dotenv
+    APP_KEY=           # Generate with: docker-compose exec app php artisan key:generate
+    DB_DATABASE=laravel
+    DB_USERNAME=laravel
+    DB_PASSWORD=secret
+    API_KEY=your-secret-api-key
+    ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+4. **Start all services**
 
-## Code of Conduct
+    ```bash
+    docker-compose up -d
+    ```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+    This starts three services:
+    - `app` — PHP 8.2-FPM (Laravel application)
+    - `web` — Nginx reverse proxy (listens on port `8081`)
+    - `db` — MariaDB 10.11
 
-## Security Vulnerabilities
+5. **Generate application key** (if not already set)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+    ```bash
+    docker-compose exec app php artisan key:generate
+    ```
 
-## License
+6. **Run migrations and seed the database**
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+    ```bash
+    docker-compose exec app php artisan migrate --seed
+    ```
+
+The API is now available at: **`http://localhost:8081/api`**
+
+---
+
+## API Key Authentication
+
+Some endpoints require an API key to access private articles or to create/update articles. The API key is configured via the `API_KEY` environment variable in `.env`.
+
+Pass the key in request headers:
+
+```
+X-API-KEY: your-secret-api-key
+```
+
+**Access levels:**
+
+| Request               | Articles returned                            |
+| --------------------- | -------------------------------------------- |
+| No `X-API-KEY` header | Public articles only (`visibility = public`) |
+| Valid `X-API-KEY`     | Both public and private articles             |
+| Invalid `X-API-KEY`   | HTTP 401 Unauthorized                        |
+
+---
+
+## API Endpoints
+
+All responses follow the structure:
+
+```json
+{
+  "data": { ... },
+  "message": "..."
+}
+```
+
+Paginated list responses also include a `meta` object:
+
+```json
+{
+  "data": [ ... ],
+  "message": "...",
+  "meta": {
+    "current_page": 1,
+    "last_page": 5,
+    "per_page": 15,
+    "total": 72
+  }
+}
+```
+
+---
+
+### `GET /api/articles` — List Articles
+
+Returns a paginated, filtered list of article translations.
+
+- **API Key:** Optional. Without a valid key, only `visibility = public` articles are returned.
+
+#### Query Parameters
+
+| Parameter         | Type    | Description                                                                               |
+| ----------------- | ------- | ----------------------------------------------------------------------------------------- |
+| `title`           | string  | Partial match on `article_translations.title` (SQL LIKE)                                  |
+| `node_type`       | string  | Exact match on `articles.node_type`. Values: `article`, `user_agreement`                  |
+| `status`          | string  | Exact match on `article_translations.status`. Values: `draft`, `published`, `unpublished` |
+| `language_code`   | string  | Exact match on `article_translations.language_code` (e.g. `en`, `et`)                     |
+| `updated_at_from` | date    | Filter translations updated on or after this date (`YYYY-MM-DD`)                          |
+| `updated_at_to`   | date    | Filter translations updated on or before this date (`YYYY-MM-DD`)                         |
+| `page`            | integer | Page number (default: `1`)                                                                |
+| `per_page`        | integer | Items per page (default: `15`)                                                            |
+
+Default sort order: `article_translations.updated_at` descending.
+
+#### Example cURL
+
+```bash
+# List all public articles
+curl http://localhost:8081/api/articles
+
+# List with API key (includes private articles)
+curl -H "X-API-KEY: your-secret-api-key" http://localhost:8081/api/articles
+
+# Filter by language and status, paginated
+curl "http://localhost:8081/api/articles?language_code=en&status=published&per_page=10"
+
+# Filter by title and date range
+curl "http://localhost:8081/api/articles?title=hello&updated_at_from=2024-01-01&updated_at_to=2024-12-31"
+```
+
+---
+
+### `GET /api/articles/by-path/{path}` — Retrieve Article by Path
+
+Retrieves a single article translation by its `path` field.
+
+- **API Key:** Optional. Without a valid key, only `visibility = public` and `status = published` translations are returned.
+
+#### URL Parameters
+
+| Parameter | Description                                                                         |
+| --------- | ----------------------------------------------------------------------------------- |
+| `path`    | The slug/path of the article translation (supports slashes, e.g. `blog/my-article`) |
+
+#### Responses
+
+| Status  | Description                                                                  |
+| ------- | ---------------------------------------------------------------------------- |
+| 200     | Article translation found and returned                                       |
+| 401     | Invalid API key provided                                                     |
+| 403/404 | Article is private and no valid API key was provided, or path does not exist |
+
+#### Example cURL
+
+```bash
+# Retrieve a public article by path
+curl http://localhost:8081/api/articles/by-path/my-article-slug
+
+# Retrieve a private article by path (requires API key)
+curl -H "X-API-KEY: your-secret-api-key" \
+  http://localhost:8081/api/articles/by-path/private/my-private-article
+```
+
+---
+
+### `GET /api/articles/{id}` — Retrieve Article by ID
+
+Retrieves a single article with all its translations by `article_id`.
+
+- **API Key:** Optional. Without a valid key, only articles with `visibility = public` are returned.
+
+#### URL Parameters
+
+| Parameter | Type    | Description                     |
+| --------- | ------- | ------------------------------- |
+| `id`      | integer | The `article_id` of the article |
+
+#### Responses
+
+| Status | Description                           |
+| ------ | ------------------------------------- |
+| 200    | Article and all translations returned |
+| 401    | Invalid API key provided              |
+| 404    | Article not found or not accessible   |
+
+#### Example cURL
+
+```bash
+# Retrieve a public article by ID
+curl http://localhost:8081/api/articles/1
+
+# Retrieve any article by ID (requires API key)
+curl -H "X-API-KEY: your-secret-api-key" http://localhost:8081/api/articles/1
+```
+
+---
+
+### `POST /api/articles` — Create Article
+
+Creates a new article along with its initial translation.
+
+- **API Key:** **Required.**
+
+#### Request Body (JSON)
+
+| Field           | Type   | Required | Description                                                             |
+| --------------- | ------ | -------- | ----------------------------------------------------------------------- |
+| `node_type`     | string | Yes      | `article` or `user_agreement`                                           |
+| `visibility`    | string | Yes      | `public` or `private`                                                   |
+| `language_code` | string | Yes      | Language code (e.g. `en`, `et`). Must exist in `site_languages`.        |
+| `title`         | string | Yes      | Translation title (max 255 characters)                                  |
+| `path`          | string | Yes      | URL path/slug (max 255 characters). Must be unique per `language_code`. |
+| `content`       | string | Yes      | Full article content (text)                                             |
+| `status`        | string | Yes      | `draft`, `published`, or `unpublished`                                  |
+
+#### Responses
+
+| Status | Description                                                            |
+| ------ | ---------------------------------------------------------------------- |
+| 201    | Article created successfully                                           |
+| 401    | Missing or invalid API key                                             |
+| 422    | Validation error (missing fields, invalid enum values, duplicate path) |
+
+#### Example cURL
+
+```bash
+curl -X POST http://localhost:8081/api/articles \
+  -H "Content-Type: application/json" \
+  -H "X-API-KEY: your-secret-api-key" \
+  -d '{
+    "node_type": "article",
+    "visibility": "public",
+    "language_code": "en",
+    "title": "My First Article",
+    "path": "my-first-article",
+    "content": "This is the full content of the article.",
+    "status": "published"
+  }'
+```
+
+---
+
+### `PUT /api/articles/{id}` — Update Article
+
+Updates an existing article and/or its translation.
+
+- **API Key:** **Required.**
+
+#### URL Parameters
+
+| Parameter | Type    | Description                               |
+| --------- | ------- | ----------------------------------------- |
+| `id`      | integer | The `article_id` of the article to update |
+
+#### Request Body (JSON)
+
+All fields are optional (include only those you want to update):
+
+| Field           | Type   | Description                                                                                            |
+| --------------- | ------ | ------------------------------------------------------------------------------------------------------ |
+| `node_type`     | string | `article` or `user_agreement`                                                                          |
+| `visibility`    | string | `public` or `private`                                                                                  |
+| `language_code` | string | Language code (e.g. `en`, `et`)                                                                        |
+| `title`         | string | Translation title (max 255 characters)                                                                 |
+| `path`          | string | URL path/slug (max 255 characters). Must be unique per `language_code` (ignoring current translation). |
+| `content`       | string | Full article content                                                                                   |
+| `status`        | string | `draft`, `published`, or `unpublished`                                                                 |
+
+#### Responses
+
+| Status | Description                  |
+| ------ | ---------------------------- |
+| 200    | Article updated successfully |
+| 401    | Missing or invalid API key   |
+| 404    | Article not found            |
+| 422    | Validation error             |
+
+#### Example cURL
+
+```bash
+curl -X PUT http://localhost:8081/api/articles/1 \
+  -H "Content-Type: application/json" \
+  -H "X-API-KEY: your-secret-api-key" \
+  -d '{
+    "title": "Updated Article Title",
+    "status": "published"
+  }'
+```
+
+---
+
+## Enum Values Reference
+
+| Field        | Model                  | Accepted Values                     |
+| ------------ | ---------------------- | ----------------------------------- |
+| `node_type`  | `articles`             | `article`, `user_agreement`         |
+| `visibility` | `articles`             | `public`, `private`                 |
+| `status`     | `article_translations` | `draft`, `published`, `unpublished` |
+
+---
+
+## Running Tests
+
+```bash
+docker-compose exec app php artisan test
+```
+
+---
+
+## Stopping the Application
+
+```bash
+# Stop containers (preserves data)
+docker-compose stop
+
+# Stop and remove containers + volumes (destroys all data)
+docker-compose down -v
+```

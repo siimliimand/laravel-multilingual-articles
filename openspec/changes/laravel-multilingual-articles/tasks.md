@@ -90,6 +90,6 @@
 
 ## 10. Documentation
 
-- [ ] 10.1 Write `README.md` with project description, prerequisites (Docker), and installation steps (`git clone`, `cp .env.example .env`, `docker-compose up`, `migrate --seed`)
-- [ ] 10.2 Document all API endpoints in `README.md` with method, path, description, request parameters, and example cURL commands
-- [ ] 10.3 Add `API_KEY` usage instructions to `README.md` (how to set and pass the key)
+- [x] 10.1 Write `README.md` with project description, prerequisites (Docker), and installation steps (`git clone`, `cp .env.example .env`, `docker-compose up`, `migrate --seed`)
+- [x] 10.2 Document all API endpoints in `README.md` with method, path, description, request parameters, and example cURL commands
+- [x] 10.3 Add `API_KEY` usage instructions to `README.md` (how to set and pass the key)
