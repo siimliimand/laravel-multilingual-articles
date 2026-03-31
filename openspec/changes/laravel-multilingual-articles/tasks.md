@@ -18,9 +18,9 @@
 
 ## 3. Eloquent Models
 
-- [ ] 3.1 Create `SiteLanguage` model mapped to `site_languages` table
-- [ ] 3.2 Create `Article` model with `SoftDeletes`, `node_type`/`visibility` enum casts, and `hasMany(ArticleTranslation)` relationship
-- [ ] 3.3 Create `ArticleTranslation` model with `SoftDeletes`, `status` enum cast, `belongsTo(Article)`, and `belongsTo(SiteLanguage, 'language_code', 'language_code')` relationship
+- [x] 3.1 Create `SiteLanguage` model mapped to `site_languages` table
+- [x] 3.2 Create `Article` model with `SoftDeletes`, `node_type`/`visibility` enum casts, and `hasMany(ArticleTranslation)` relationship
+- [x] 3.3 Create `ArticleTranslation` model with `SoftDeletes`, `status` enum cast, `belongsTo(Article)`, and `belongsTo(SiteLanguage, 'language_code', 'language_code')` relationship
 
 ## 4. Seeders
 
