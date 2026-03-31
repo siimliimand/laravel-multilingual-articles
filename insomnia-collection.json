@@ -1,0 +1,252 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2026-03-31T20:36:00.000Z",
+  "__export_source": "insomnia.desktop.app:v2023.5.8",
+  "resources": [
+    {
+      "_id": "wrk_laravel_multilingual",
+      "_type": "workspace",
+      "name": "Laravel Multilingual Articles",
+      "description": "API collection for the Laravel Multilingual Articles project",
+      "scope": "collection"
+    },
+    {
+      "_id": "env_base",
+      "_type": "environment",
+      "parentId": "wrk_laravel_multilingual",
+      "name": "Base Environment",
+      "data": {
+        "base_url": "http://localhost:8081/api",
+        "api_key": "your-api-key-here"
+      }
+    },
+    {
+      "_id": "fld_public",
+      "_type": "request_group",
+      "parentId": "wrk_laravel_multilingual",
+      "name": "Public Routes (optional API key)"
+    },
+    {
+      "_id": "fld_protected",
+      "_type": "request_group",
+      "parentId": "wrk_laravel_multilingual",
+      "name": "Protected Routes (API key required)"
+    },
+    {
+      "_id": "req_list_articles",
+      "_type": "request",
+      "parentId": "fld_public",
+      "name": "List Articles",
+      "method": "GET",
+      "url": "{{ _.base_url }}/articles",
+      "description": "Returns a paginated, filtered list of article translations.\nPublic (no API key): only articles with visibility=public.\nWith API key: all articles including private.\n\nQuery params:\n- title (string, max:70)\n- node_type (article|user_agreement)\n- status (draft|published|unpublished)\n- language_code (2-char, e.g. 'en')\n- updated_at_from (Y-m-d)\n- updated_at_to (Y-m-d)\n- page (integer, min:1)\n- per_page (integer, min:1, max:100)",
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "parameters": [
+        {
+          "name": "language_code",
+          "value": "en",
+          "disabled": false
+        },
+        {
+          "name": "status",
+          "value": "published",
+          "disabled": true
+        },
+        {
+          "name": "node_type",
+          "value": "article",
+          "disabled": true
+        },
+        {
+          "name": "title",
+          "value": "",
+          "disabled": true
+        },
+        {
+          "name": "updated_at_from",
+          "value": "2024-01-01",
+          "disabled": true
+        },
+        {
+          "name": "updated_at_to",
+          "value": "2024-12-31",
+          "disabled": true
+        },
+        {
+          "name": "page",
+          "value": "1",
+          "disabled": true
+        },
+        {
+          "name": "per_page",
+          "value": "15",
+          "disabled": true
+        }
+      ]
+    },
+    {
+      "_id": "req_list_articles_private",
+      "_type": "request",
+      "parentId": "fld_public",
+      "name": "List Articles (with API key - private access)",
+      "method": "GET",
+      "url": "{{ _.base_url }}/articles",
+      "description": "Same as List Articles but sends X-API-KEY header to access private articles too.",
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        },
+        {
+          "name": "X-API-KEY",
+          "value": "{{ _.api_key }}"
+        }
+      ],
+      "parameters": [
+        {
+          "name": "language_code",
+          "value": "en",
+          "disabled": false
+        },
+        {
+          "name": "page",
+          "value": "1",
+          "disabled": true
+        },
+        {
+          "name": "per_page",
+          "value": "15",
+          "disabled": true
+        }
+      ]
+    },
+    {
+      "_id": "req_show_article_by_id",
+      "_type": "request",
+      "parentId": "fld_public",
+      "name": "Get Article by ID",
+      "method": "GET",
+      "url": "{{ _.base_url }}/articles/1",
+      "description": "Retrieve a single article with all its translations by article ID.\nVisibility is enforced at service level based on API key presence.",
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req_show_article_by_id_private",
+      "_type": "request",
+      "parentId": "fld_public",
+      "name": "Get Article by ID (with API key - private access)",
+      "method": "GET",
+      "url": "{{ _.base_url }}/articles/1",
+      "description": "Retrieve a single article (including private visibility) by providing the X-API-KEY header.",
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        },
+        {
+          "name": "X-API-KEY",
+          "value": "{{ _.api_key }}"
+        }
+      ]
+    },
+    {
+      "_id": "req_show_article_by_path",
+      "_type": "request",
+      "parentId": "fld_public",
+      "name": "Get Article by Path",
+      "method": "GET",
+      "url": "{{ _.base_url }}/articles/by-path/welcome-to-our-blog",
+      "description": "Retrieve a single article translation by its URL path.\nReplace 'welcome-to-our-blog' with the actual path value.\nSupports nested paths, e.g. 'section/my-article'.",
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req_show_article_by_path_private",
+      "_type": "request",
+      "parentId": "fld_public",
+      "name": "Get Article by Path (with API key - private access)",
+      "method": "GET",
+      "url": "{{ _.base_url }}/articles/by-path/internal-guidelines",
+      "description": "Retrieve a single article translation (including private visibility) by path with API key.",
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        },
+        {
+          "name": "X-API-KEY",
+          "value": "{{ _.api_key }}"
+        }
+      ]
+    },
+    {
+      "_id": "req_create_article",
+      "_type": "request",
+      "parentId": "fld_protected",
+      "name": "Create Article",
+      "method": "POST",
+      "url": "{{ _.base_url }}/articles",
+      "description": "Creates a new article with its initial translation.\nRequires X-API-KEY header.\n\nRequired fields:\n- node_type: article|user_agreement\n- visibility: public|private\n- language_code: 2-char code (must exist in site_languages)\n- title: string, max:70\n- path: string, max:70 (unique per language)\n- content: string\n- status: draft|published|unpublished\n\nOptional fields:\n- summary: string, max:180\n- keywords: string, max:255",
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "X-API-KEY",
+          "value": "{{ _.api_key }}"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"node_type\": \"article\",\n  \"visibility\": \"public\",\n  \"language_code\": \"en\",\n  \"title\": \"My First Article\",\n  \"path\": \"my-first-article\",\n  \"content\": \"<p>This is the full content of the article.</p>\",\n  \"status\": \"published\",\n  \"summary\": \"A short summary of the article.\",\n  \"keywords\": \"laravel, multilingual, api\"\n}"
+      }
+    },
+    {
+      "_id": "req_update_article",
+      "_type": "request",
+      "parentId": "fld_protected",
+      "name": "Update Article",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/articles/1",
+      "description": "Updates an existing article and/or its translation.\nRequires X-API-KEY header.\nAll fields are optional (partial update supported).\n\nAvailable fields:\n- node_type: article|user_agreement\n- visibility: public|private\n- language_code: 2-char code (must exist in site_languages)\n- title: string, max:70\n- path: string, max:70 (unique per language, ignores current record)\n- content: string\n- status: draft|published|unpublished\n- summary: string, max:180\n- keywords: string, max:255",
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "X-API-KEY",
+          "value": "{{ _.api_key }}"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"language_code\": \"en\",\n  \"title\": \"Updated Article Title\",\n  \"status\": \"published\",\n  \"summary\": \"Updated summary.\"\n}"
+      }
+    }
+  ]
+}
