@@ -78,8 +78,10 @@ class ArticleController extends Controller
      */
     public function show(Request $request, int $id): JsonResponse
     {
+        $isPrivate = (bool) $request->attributes->get('is_private_access', false);
+
         try {
-            $article = $this->articleService->getById($id);
+            $article = $this->articleService->getById($id, $isPrivate);
         } catch (ModelNotFoundException) {
             return response()->json([
                 'data'    => null,

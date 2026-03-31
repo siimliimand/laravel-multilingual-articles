@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('articles', function (Blueprint $table) {
-            $table->increments('article_id');
+            $table->bigIncrements('article_id');
             $table->enum('node_type', ['article', 'user_agreement']);
             $table->enum('visibility', ['public', 'private']);
             $table->timestamps();

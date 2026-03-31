@@ -91,7 +91,8 @@ class ArticleService
             ->where('article_translations.path', $path);
 
         if (!$isPrivate) {
-            $query->where('articles.visibility', 'public');
+            $query->where('articles.visibility', 'public')
+                  ->where('article_translations.status', 'published');
         }
 
         $translation = $query->first();
@@ -106,12 +107,26 @@ class ArticleService
     /**
      * Retrieve an article with all its translations by article_id.
      *
-     * Throws ModelNotFoundException when the article does not exist.
+     * Public callers ($isPrivate = false) can only access articles with
+     * visibility = 'public'. Throws ModelNotFoundException when not found.
      */
-    public function getById(int $id): Article
+    public function getById(int $id, bool $isPrivate = true): Article
     {
-        return Article::with('translations')
-            ->findOrFail($id);
+        $query = Article::with('translations')->where('article_id', $id);
+
+        if (!$isPrivate) {
+            $query->where('visibility', 'public');
+        }
+
+        $article = $query->first();
+
+        if (!$article) {
+            throw new \Illuminate\Database\Eloquent\ModelNotFoundException(
+                "Article with id '{$id}' not found."
+            );
+        }
+
+        return $article;
     }
 
     /**

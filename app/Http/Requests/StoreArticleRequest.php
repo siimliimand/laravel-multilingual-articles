@@ -28,7 +28,7 @@ class StoreArticleRequest extends FormRequest
                 'required',
                 'string',
                 'max:70',
-                'unique:article_translations,path,NULL,translation_id,language_code,' . $this->input('language_code'),
+                'unique:article_translations,path,NULL,article_translation_id,language_code,' . $this->input('language_code'),
             ],
             'content'       => ['required', 'string'],
             'status'        => ['required', 'string', 'in:draft,published,unpublished'],

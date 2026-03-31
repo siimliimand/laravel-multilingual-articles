@@ -13,7 +13,7 @@ class ArticleTranslation extends Model
     /**
      * The primary key for the model.
      */
-    protected $primaryKey = 'translation_id';
+    protected $primaryKey = 'article_translation_id';
 
     /**
      * The attributes that are mass assignable.

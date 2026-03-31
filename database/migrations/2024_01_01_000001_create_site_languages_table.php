@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('site_languages', function (Blueprint $table) {
-            $table->increments('language_id');
+            $table->bigIncrements('language_id');
             $table->string('language_code', 2)->unique();
             $table->string('language_name', 45);
             $table->timestamps();

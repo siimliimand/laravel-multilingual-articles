@@ -57,6 +57,18 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
+    /*
+    |--------------------------------------------------------------------------
+    | API Key
+    |--------------------------------------------------------------------------
+    |
+    | The API key used by CheckApiKey and OptionalApiKey middleware to gate
+    | private access. Set the API_KEY value in your .env file.
+    |
+    */
+
+    'api_key' => env('API_KEY'),
+
     'asset_url' => env('ASSET_URL'),
 
     /*

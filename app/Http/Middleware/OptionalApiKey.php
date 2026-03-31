@@ -18,7 +18,7 @@ class OptionalApiKey
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $apiKey    = env('API_KEY');
+        $apiKey    = config('app.api_key');
         $headerKey = $request->header('X-API-KEY');
 
         if (!empty($headerKey)) {

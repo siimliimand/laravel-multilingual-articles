@@ -26,11 +26,9 @@ class ArticleTest extends TestCase
     {
         parent::setUp();
 
-        // Override the API_KEY environment variable so the middleware uses our test key.
-        // Laravel's env() helper reads from $_ENV first (after the initial bootstrap),
-        // so this is the correct way to override it in tests.
-        $_ENV['API_KEY']    = $this->apiKey;
-        $_SERVER['API_KEY'] = $this->apiKey;
+        // Override config('app.api_key') so the CheckApiKey / OptionalApiKey middleware
+        // validates against our test key (config values are mutable during tests).
+        config(['app.api_key' => $this->apiKey]);
 
         // Seed base languages required by the FK constraint on article_translations
         SiteLanguage::insert([
@@ -102,11 +100,11 @@ class ArticleTest extends TestCase
 
         // Use raw DB updates to set updated_at, bypassing Eloquent auto-timestamps
         DB::table('article_translations')
-            ->where('translation_id', $older->translations->first()->translation_id)
+            ->where('article_translation_id', $older->translations->first()->article_translation_id)
             ->update(['updated_at' => now()->subDays(2)->toDateTimeString()]);
 
         DB::table('article_translations')
-            ->where('translation_id', $newer->translations->first()->translation_id)
+            ->where('article_translation_id', $newer->translations->first()->article_translation_id)
             ->update(['updated_at' => now()->toDateTimeString()]);
 
         $response = $this->getJson('/api/articles');
@@ -214,15 +212,15 @@ class ArticleTest extends TestCase
         $fresh = $this->makePublicArticle(['title' => 'Fresh', 'path' => 'fresh-article']);
 
         DB::table('article_translations')
-            ->where('translation_id', $old->translations->first()->translation_id)
+            ->where('article_translation_id', $old->translations->first()->article_translation_id)
             ->update(['updated_at' => now()->subDays(10)->toDateTimeString()]);
 
         DB::table('article_translations')
-            ->where('translation_id', $mid->translations->first()->translation_id)
+            ->where('article_translation_id', $mid->translations->first()->article_translation_id)
             ->update(['updated_at' => now()->subDays(5)->toDateTimeString()]);
 
         DB::table('article_translations')
-            ->where('translation_id', $fresh->translations->first()->translation_id)
+            ->where('article_translation_id', $fresh->translations->first()->article_translation_id)
             ->update(['updated_at' => now()->toDateTimeString()]);
 
         // Range: 7 days ago to 3 days ago – 'Mid' (5 days ago) is the only match
@@ -433,5 +431,62 @@ class ArticleTest extends TestCase
             'article_id' => $id,
             'title'      => 'Updated Title',
         ]);
+    }
+    // =========================================================================
+    // S1 – Unauthenticated list hides private articles
+    // =========================================================================
+
+    /** @test */
+    public function public_list_hides_private_articles_from_unauthenticated_callers(): void
+    {
+        $this->makePublicArticle(['title' => 'Public Visible', 'path' => 'public-visible']);
+        $this->makePrivateArticle(['title' => 'Private Hidden', 'path' => 'private-hidden']);
+
+        // Call without any API key
+        $response = $this->getJson('/api/articles');
+
+        $response->assertOk();
+
+        $titles = collect($response->json('data'))->pluck('title')->toArray();
+        $this->assertContains('Public Visible', $titles);
+        $this->assertNotContains('Private Hidden', $titles);
+    }
+
+    // =========================================================================
+    // S2a – Soft-deleted article not returned in list
+    // =========================================================================
+
+    /** @test */
+    public function soft_deleted_article_not_returned_in_list(): void
+    {
+        $article = $this->makePublicArticle(['title' => 'To Be Deleted', 'path' => 'to-be-deleted']);
+
+        // Soft-delete the article
+        $article->delete();
+
+        $response = $this->getJson('/api/articles');
+
+        $response->assertOk();
+
+        $titles = collect($response->json('data'))->pluck('title')->toArray();
+        $this->assertNotContains('To Be Deleted', $titles);
+    }
+
+    // =========================================================================
+    // S2b – Soft-deleted article not returned by path
+    // =========================================================================
+
+    /** @test */
+    public function soft_deleted_article_not_returned_by_path(): void
+    {
+        $article = $this->makePublicArticle(['title' => 'Deleted Post', 'path' => 'deleted-post']);
+        $path = $article->translations->first()->path;
+
+        // Soft-delete the article
+        $article->delete();
+
+        $response = $this->getJson("/api/articles/by-path/{$path}");
+
+        $response->assertNotFound();
     }
 }

@@ -30,7 +30,7 @@ class UpdateArticleRequest extends FormRequest
         if ($languageCode && $articleId) {
             $translationId = \App\Models\ArticleTranslation::where('article_id', $articleId)
                 ->where('language_code', $languageCode)
-                ->value('translation_id');
+                ->value('article_translation_id');
         }
 
         return [
@@ -44,7 +44,7 @@ class UpdateArticleRequest extends FormRequest
                 'max:70',
                 Rule::unique('article_translations', 'path')
                     ->where('language_code', $languageCode)
-                    ->ignore($translationId, 'translation_id'),
+                    ->ignore($translationId, 'article_translation_id'),
             ],
             'content'       => ['sometimes', 'string'],
             'status'        => ['sometimes', 'string', 'in:draft,published,unpublished'],

@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('article_translations', function (Blueprint $table) {
-            $table->increments('translation_id');
-            $table->unsignedInteger('article_id');
+            $table->bigIncrements('article_translation_id');
+            $table->unsignedBigInteger('article_id');
             $table->string('language_code', 2);
             $table->string('title', 70);
             $table->string('path', 70);
