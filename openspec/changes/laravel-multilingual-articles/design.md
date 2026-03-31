@@ -105,7 +105,7 @@ This is a greenfield Laravel 10+ application. There is no existing codebase to m
 2. Copy `.env.example` to `.env` and set `API_KEY`, `DB_*` values
 3. Run `docker-compose up -d`
 4. Run `docker-compose exec app php artisan migrate --seed`
-5. API is available at `http://localhost:8080/api`
+5. API is available at `http://localhost:8081/api`
 
 **Rollback**: `docker-compose down -v` destroys all containers and volumes. No external state is modified.
 

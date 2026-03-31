@@ -2,12 +2,12 @@
 
 ## 1. Project Scaffolding & Docker Setup
 
-- [ ] 1.1 Create Laravel 10+ project and initialize Git repository
-- [ ] 1.2 Create `docker-compose.yml` with `app` (php:8.2-fpm), `web` (nginx:alpine), and `db` (mariadb:10.11) services
-- [ ] 1.3 Create `docker/nginx/default.conf` Nginx configuration for Laravel
-- [ ] 1.4 Create `docker/php/Dockerfile` for PHP-FPM with required extensions (pdo_mysql, mbstring, etc.)
-- [ ] 1.5 Add `.env.example` with `APP_KEY`, `DB_*`, and `API_KEY` placeholder entries
-- [ ] 1.6 Verify `docker-compose up -d` starts all three services and the app is reachable
+- [x] 1.1 Create Laravel 10+ project and initialize Git repository
+- [x] 1.2 Create `docker-compose.yml` with `app` (php:8.2-fpm), `web` (nginx:alpine), and `db` (mariadb:10.11) services
+- [x] 1.3 Create `docker/nginx/default.conf` Nginx configuration for Laravel
+- [x] 1.4 Create `docker/php/Dockerfile` for PHP-FPM with required extensions (pdo_mysql, mbstring, etc.)
+- [x] 1.5 Add `.env.example` with `APP_KEY`, `DB_*`, and `API_KEY` placeholder entries
+- [x] 1.6 Verify `docker-compose up -d` starts all three services and the app is reachable
 
 ## 2. Database Migrations
 
