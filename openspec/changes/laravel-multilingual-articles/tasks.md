@@ -41,10 +41,10 @@
 
 ## 6. Middleware
 
-- [ ] 6.1 Create `app/Http/Middleware/CheckApiKey.php` that reads `X-API-KEY` header and compares to `env('API_KEY')`
-- [ ] 6.2 Return HTTP 401 JSON response when API key is missing or invalid
-- [ ] 6.3 Register `CheckApiKey` middleware alias in `app/Http/Kernel.php` (e.g., as `api.key`)
-- [ ] 6.4 Add a request attribute or helper (e.g., `$request->isPrivateAccess()` or a flag) so controllers and services can distinguish public vs. private context
+- [x] 6.1 Create `app/Http/Middleware/CheckApiKey.php` that reads `X-API-KEY` header and compares to `env('API_KEY')`
+- [x] 6.2 Return HTTP 401 JSON response when API key is missing or invalid
+- [x] 6.3 Register `CheckApiKey` middleware alias in `app/Http/Kernel.php` (e.g., as `api.key`)
+- [x] 6.4 Add a request attribute or helper (e.g., `$request->isPrivateAccess()` or a flag) so controllers and services can distinguish public vs. private context
 
 ## 7. Form Request Validation Classes
 
