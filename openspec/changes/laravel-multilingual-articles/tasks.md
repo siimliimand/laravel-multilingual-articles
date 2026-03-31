@@ -48,9 +48,9 @@
 
 ## 7. Form Request Validation Classes
 
-- [ ] 7.1 Create `app/Http/Requests/StoreArticleRequest.php` with rules for `node_type`, `visibility`, `language_code`, `title`, `path`, `content`, `status` (required, enum values, max lengths, unique path per language)
-- [ ] 7.2 Create `app/Http/Requests/UpdateArticleRequest.php` with `sometimes` rules for updatable fields and unique path scoping (ignore current translation)
-- [ ] 7.3 Create `app/Http/Requests/ListArticleRequest.php` with optional filter parameters (`title`, `node_type`, `status`, `language_code`, `updated_at_from`, `updated_at_to`, `page`, `per_page`) and date validation for range fields
+- [x] 7.1 Create `app/Http/Requests/StoreArticleRequest.php` with rules for `node_type`, `visibility`, `language_code`, `title`, `path`, `content`, `status` (required, enum values, max lengths, unique path per language)
+- [x] 7.2 Create `app/Http/Requests/UpdateArticleRequest.php` with `sometimes` rules for updatable fields and unique path scoping (ignore current translation)
+- [x] 7.3 Create `app/Http/Requests/ListArticleRequest.php` with optional filter parameters (`title`, `node_type`, `status`, `language_code`, `updated_at_from`, `updated_at_to`, `page`, `per_page`) and date validation for range fields
 
 ## 8. API Controller & Routes
 
