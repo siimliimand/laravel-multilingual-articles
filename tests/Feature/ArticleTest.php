@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Enums\NodeType;
+use App\Enums\Visibility;
 use App\Models\Article;
 use App\Models\SiteLanguage;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -488,5 +490,91 @@ class ArticleTest extends TestCase
         $response = $this->getJson("/api/articles/by-path/{$path}");
 
         $response->assertNotFound();
+    }
+
+    // =========================================================================
+    // Enum Tests – Model returns enum instances
+    // =========================================================================
+
+    /** @test */
+    public function article_model_returns_node_type_enum_instance(): void
+    {
+        $article = Article::create([
+            'node_type' => NodeType::ARTICLE,
+            'visibility' => Visibility::PUBLIC,
+        ]);
+
+        $retrieved = Article::find($article->article_id);
+
+        $this->assertInstanceOf(NodeType::class, $retrieved->node_type);
+        $this->assertTrue($retrieved->node_type->isArticle());
+    }
+
+    /** @test */
+    public function article_model_returns_visibility_enum_instance(): void
+    {
+        $article = Article::create([
+            'node_type' => NodeType::ARTICLE,
+            'visibility' => Visibility::PUBLIC,
+        ]);
+
+        $retrieved = Article::find($article->article_id);
+
+        $this->assertInstanceOf(Visibility::class, $retrieved->visibility);
+        $this->assertTrue($retrieved->visibility->isPublic());
+    }
+
+    /** @test */
+    public function article_model_accepts_string_values_for_enum_fields(): void
+    {
+        $article = Article::create([
+            'node_type' => 'article',
+            'visibility' => 'private',
+        ]);
+
+        $retrieved = Article::find($article->article_id);
+
+        $this->assertInstanceOf(NodeType::class, $retrieved->node_type);
+        $this->assertEquals(NodeType::ARTICLE, $retrieved->node_type);
+        $this->assertInstanceOf(Visibility::class, $retrieved->visibility);
+        $this->assertEquals(Visibility::PRIVATE, $retrieved->visibility);
+    }
+
+    /** @test */
+    public function article_serializes_enum_to_string_in_json(): void
+    {
+        $article = $this->makePublicArticle(['title' => 'JSON Test', 'path' => 'json-test']);
+
+        $json = $article->toJson();
+        $decoded = json_decode($json, true);
+
+        $this->assertEquals('article', $decoded['node_type']);
+        $this->assertEquals('public', $decoded['visibility']);
+    }
+
+    /** @test */
+    public function create_article_with_enum_instance(): void
+    {
+        $payload = [
+            'node_type'     => NodeType::USER_AGREEMENT->value,
+            'visibility'    => Visibility::PRIVATE->value,
+            'language_code' => 'en',
+            'title'         => 'User Agreement Article',
+            'path'          => 'user-agreement-article',
+            'content'       => 'Terms and conditions...',
+            'status'        => 'published',
+        ];
+
+        $response = $this->withHeader('X-API-KEY', $this->apiKey)
+            ->postJson('/api/articles', $payload);
+
+        $response->assertCreated()
+            ->assertJsonPath('data.node_type', 'user_agreement')
+            ->assertJsonPath('data.visibility', 'private');
+
+        $this->assertDatabaseHas('articles', [
+            'node_type' => 'user_agreement',
+            'visibility' => 'private',
+        ]);
     }
 }

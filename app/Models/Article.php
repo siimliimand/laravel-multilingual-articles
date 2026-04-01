@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\NodeType;
+use App\Enums\Visibility;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -27,8 +29,8 @@ class Article extends Model
      * The attributes that should be cast.
      */
     protected $casts = [
-        'node_type' => 'string',
-        'visibility' => 'string',
+        'node_type' => NodeType::class,
+        'visibility' => Visibility::class,
     ];
 
     /**

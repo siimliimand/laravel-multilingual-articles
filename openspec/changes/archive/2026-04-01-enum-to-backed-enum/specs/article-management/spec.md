@@ -1,6 +1,6 @@
 # Article Management
 
-## ADDED Requirements
+## MODIFIED Requirements
 
 ### Requirement: Create article with translation
 
@@ -57,35 +57,3 @@ The `Article` model SHALL return `NodeType` and `Visibility` enum instances when
 
 - **WHEN** an article model is retrieved from the database
 - **THEN** `$article->node_type` returns a `NodeType` enum instance and `$article->visibility` returns a `Visibility` enum instance
-
----
-
-### Requirement: Soft delete support at database level
-
-The system SHALL support soft-deleting articles by setting `deleted_at` on the `articles` record via Laravel's `SoftDeletes` trait. Soft-deleted articles SHALL NOT appear in list queries or retrieval endpoints. There is no HTTP DELETE endpoint — soft deletion is enforced at the ORM/database level only.
-
-#### Scenario: Soft-deleted article not returned in list
-
-- **WHEN** an article's `deleted_at` is set in the database
-- **THEN** the soft-deleted article does not appear in any `GET /api/articles` response
-
-#### Scenario: Soft-deleted article not returned by path
-
-- **WHEN** an article's `deleted_at` is set in the database
-- **THEN** a `GET /api/articles/by-path/{path}` request returns HTTP 404 for that article
-
----
-
-### Requirement: Migrations and seeders
-
-The system SHALL include database migrations for `site_languages`, `articles`, and `article_translations` tables with the exact schema specified. At least 2 predefined articles with translations SHALL be provided via seeders.
-
-#### Scenario: Migrations run successfully
-
-- **WHEN** `php artisan migrate` is executed on a fresh database
-- **THEN** all three tables are created with the correct columns and indexes
-
-#### Scenario: Seeders populate initial data
-
-- **WHEN** `php artisan db:seed` is executed
-- **THEN** at least 2 article records with their translations are present in the database
