@@ -7,8 +7,8 @@
 
 ## 2. Database Indexes
 
-- [ ] 2.1 Create migration `add_indexes_to_article_translations_table` with indexes on `['language_code', 'status']`, `path`, and `updated_at`
-- [ ] 2.2 Run migration and verify indexes created successfully
+- [x] 2.1 Create migration `add_indexes_to_article_translations_table` with indexes on `['language_code', 'status']`, `path`, and `updated_at`
+- [x] 2.2 Run migration and verify indexes created successfully
 
 ## 3. API Resources
 
