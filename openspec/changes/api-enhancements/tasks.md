@@ -12,8 +12,8 @@
 
 ## 3. API Resources
 
-- [ ] 3.1 Create `ArticleResource` at `app/Http/Resources/ArticleResource.php` for single article/translation transformation
-- [ ] 3.2 Create `ArticleCollection` at `app/Http/Resources/ArticleCollection.php` for paginated lists with metadata
+- [x] 3.1 Create `ArticleResource` at `app/Http/Resources/ArticleResource.php` for single article/translation transformation
+- [x] 3.2 Create `ArticleCollection` at `app/Http/Resources/ArticleCollection.php` for paginated lists with metadata
 
 ## 4. Authorization Policy
 
