@@ -43,7 +43,7 @@
 
 ## 7. Routes
 
-- [ ] 7.1 Add `DELETE /api/articles/{id}` route in `routes/api.php` protected by `api.key` middleware
+- [x] 7.1 Add `DELETE /api/articles/{id}` route in `routes/api.php` protected by `api.key` middleware
 
 ## 8. Tests
 
