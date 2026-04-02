@@ -8,6 +8,7 @@ class StoreArticleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
+     * Authentication is handled by API key middleware.
      */
     public function authorize(): bool
     {

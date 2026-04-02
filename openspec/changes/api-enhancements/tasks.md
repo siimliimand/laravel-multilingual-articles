@@ -17,11 +17,11 @@
 
 ## 4. Authorization Policy
 
-- [ ] 4.1 Create `ArticlePolicy` at `app/Policies/ArticlePolicy.php` with `create`, `update`, and `delete` methods
-- [ ] 4.2 Register `ArticlePolicy` in `AuthServiceProvider` for `Article` model
-- [ ] 4.3 Update `StoreArticleRequest` `authorize()` method to return `true` (authenticated via API key middleware)
-- [ ] 4.4 Update `UpdateArticleRequest` `authorize()` method to use `ArticlePolicy@update`
-- [ ] 4.5 Create `DeleteArticleRequest` at `app/Http/Requests/DeleteArticleRequest.php` with authorization via `ArticlePolicy@delete`
+- [x] 4.1 Create `ArticlePolicy` at `app/Policies/ArticlePolicy.php` with `create`, `update`, and `delete` methods
+- [x] 4.2 Register `ArticlePolicy` in `AuthServiceProvider` for `Article` model
+- [x] 4.3 Update `StoreArticleRequest` `authorize()` method to return `true` (authenticated via API key middleware)
+- [x] 4.4 Update `UpdateArticleRequest` `authorize()` method to use `ArticlePolicy@update`
+- [x] 4.5 Create `DeleteArticleRequest` at `app/Http/Requests/DeleteArticleRequest.php` with authorization via `ArticlePolicy@delete`
 
 ## 5. Form Request Validation Updates
 

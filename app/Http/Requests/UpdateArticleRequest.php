@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Article;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -9,10 +10,12 @@ class UpdateArticleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
+     * Uses ArticlePolicy to check ownership via the first translation's created_by field.
      */
     public function authorize(): bool
     {
-        return true;
+        $article = Article::find($this->route('id'));
+        return $article && $this->user()->can('update', $article);
     }
 
     /**
