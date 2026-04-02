@@ -224,4 +224,15 @@ class ArticleService
 
         return $article->load('translations');
     }
+
+    /**
+     * Delete an article and all its translations.
+     *
+     * Throws ModelNotFoundException when the article does not exist.
+     */
+    public function delete(int $id): void
+    {
+        $article = Article::findOrFail($id);
+        $article->delete();
+    }
 }

@@ -34,12 +34,12 @@
 
 ## 6. Controller Updates
 
-- [ ] 6.1 Update `ArticleController@index` to return `ArticleCollection` instead of raw JSON
-- [ ] 6.2 Update `ArticleController@show` to return `ArticleResource`
-- [ ] 6.3 Update `ArticleController@showByPath` to return `ArticleResource`
-- [ ] 6.4 Update `ArticleController@store` to return `ArticleResource` with HTTP 201
-- [ ] 6.5 Update `ArticleController@update` to return `ArticleResource`
-- [ ] 6.6 Add `destroy()` method to `ArticleController` for DELETE endpoint with authorization
+- [x] 6.1 Update `ArticleController@index` to return `ArticleCollection` instead of raw JSON
+- [x] 6.2 Update `ArticleController@show` to return `ArticleResource`
+- [x] 6.3 Update `ArticleController@showByPath` to return `ArticleResource`
+- [x] 6.4 Update `ArticleController@store` to return `ArticleResource` with HTTP 201
+- [x] 6.5 Update `ArticleController@update` to return `ArticleResource`
+- [x] 6.6 Add `destroy()` method to `ArticleController` for DELETE endpoint with authorization
 
 ## 7. Routes
 
