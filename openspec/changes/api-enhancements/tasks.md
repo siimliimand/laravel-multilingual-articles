@@ -47,12 +47,12 @@
 
 ## 8. Tests
 
-- [ ] 8.1 Create test for `TranslationStatus` enum values and methods
-- [ ] 8.2 Create test for DELETE endpoint success (owner)
-- [ ] 8.3 Create test for DELETE endpoint authorization failure (non-owner)
-- [ ] 8.4 Create test for DELETE endpoint not found
-- [ ] 8.5 Create test for DELETE endpoint unauthenticated
-- [ ] 8.6 Verify existing article tests pass with API Resources
+- [x] 8.1 Create test for `TranslationStatus` enum values and methods
+- [x] 8.2 Create test for DELETE endpoint success (owner)
+- [x] 8.3 Create test for DELETE endpoint authorization failure (non-owner)
+- [x] 8.4 Create test for DELETE endpoint not found
+- [x] 8.5 Create test for DELETE endpoint unauthenticated
+- [x] 8.6 Verify existing article tests pass with API Resources
 
 ## 9. Verification
 

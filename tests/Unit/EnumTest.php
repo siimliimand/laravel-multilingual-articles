@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use App\Enums\NodeType;
+use App\Enums\TranslationStatus;
 use App\Enums\Visibility;
 use PHPUnit\Framework\TestCase;
 
@@ -140,5 +141,85 @@ class EnumTest extends TestCase
         $decoded = json_decode($json, true);
 
         $this->assertEquals('public', $decoded['visibility']);
+    }
+
+    // =========================================================================
+    // TranslationStatus Enum Tests
+    // =========================================================================
+
+    /** @test */
+    public function translation_status_has_draft_case(): void
+    {
+        $this->assertEquals('draft', TranslationStatus::DRAFT->value);
+    }
+
+    /** @test */
+    public function translation_status_has_published_case(): void
+    {
+        $this->assertEquals('published', TranslationStatus::PUBLISHED->value);
+    }
+
+    /** @test */
+    public function translation_status_has_unpublished_case(): void
+    {
+        $this->assertEquals('unpublished', TranslationStatus::UNPUBLISHED->value);
+    }
+
+    /** @test */
+    public function translation_status_label_returns_human_readable_name(): void
+    {
+        $this->assertEquals('Draft', TranslationStatus::DRAFT->label());
+        $this->assertEquals('Published', TranslationStatus::PUBLISHED->label());
+        $this->assertEquals('Unpublished', TranslationStatus::UNPUBLISHED->label());
+    }
+
+    /** @test */
+    public function translation_status_is_published_returns_true_for_published(): void
+    {
+        $this->assertTrue(TranslationStatus::PUBLISHED->isPublished());
+    }
+
+    /** @test */
+    public function translation_status_is_published_returns_false_for_draft(): void
+    {
+        $this->assertFalse(TranslationStatus::DRAFT->isPublished());
+    }
+
+    /** @test */
+    public function translation_status_is_published_returns_false_for_unpublished(): void
+    {
+        $this->assertFalse(TranslationStatus::UNPUBLISHED->isPublished());
+    }
+
+    /** @test */
+    public function translation_status_values_returns_all_enum_values(): void
+    {
+        $values = TranslationStatus::values();
+
+        $this->assertEquals(['draft', 'published', 'unpublished'], $values);
+    }
+
+    /** @test */
+    public function translation_status_try_from_returns_null_for_invalid_value(): void
+    {
+        $this->assertNull(TranslationStatus::tryFrom('invalid_value'));
+    }
+
+    /** @test */
+    public function translation_status_try_from_returns_case_for_valid_value(): void
+    {
+        $this->assertSame(TranslationStatus::DRAFT, TranslationStatus::tryFrom('draft'));
+        $this->assertSame(TranslationStatus::PUBLISHED, TranslationStatus::tryFrom('published'));
+        $this->assertSame(TranslationStatus::UNPUBLISHED, TranslationStatus::tryFrom('unpublished'));
+    }
+
+    /** @test */
+    public function translation_status_json_serialization(): void
+    {
+        $data = ['status' => TranslationStatus::PUBLISHED];
+        $json = json_encode($data);
+        $decoded = json_decode($json, true);
+
+        $this->assertEquals('published', $decoded['status']);
     }
 }

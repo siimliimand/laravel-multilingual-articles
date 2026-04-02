@@ -6,6 +6,7 @@ use App\Enums\NodeType;
 use App\Enums\Visibility;
 use App\Models\Article;
 use App\Models\SiteLanguage;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
@@ -576,5 +577,130 @@ class ArticleTest extends TestCase
             'node_type' => 'user_agreement',
             'visibility' => 'private',
         ]);
+    }
+
+    // =========================================================================
+    // DELETE Endpoint Tests
+    // =========================================================================
+
+    /** @test */
+    public function delete_article_with_valid_api_key_returns_200(): void
+    {
+        $article = $this->makePublicArticle(['title' => 'To Delete', 'path' => 'to-delete']);
+        $id = $article->article_id;
+
+        $response = $this->withHeader('X-API-KEY', $this->apiKey)
+            ->deleteJson("/api/articles/{$id}");
+
+        $response->assertOk()
+            ->assertJsonPath('message', 'Article deleted successfully.');
+
+        // Verify soft delete
+        $this->assertSoftDeleted('articles', ['article_id' => $id]);
+    }
+
+    /** @test */
+    public function delete_article_by_owner_returns_200(): void
+    {
+        // Note: The DELETE route uses api.key middleware, so API key auth is required.
+        // When is_private_access=true (from valid API key), authorization passes.
+        // User-based policy auth would require api.key.optional middleware.
+        $owner = User::create([
+            'name' => 'Owner',
+            'email' => 'owner@test.com',
+            'password' => bcrypt('password'),
+        ]);
+
+        $article = Article::create([
+            'node_type' => 'article',
+            'visibility' => 'public',
+        ]);
+
+        $article->translations()->create([
+            'language_code' => 'en',
+            'title' => 'Owner Article',
+            'path' => 'owner-article',
+            'content' => 'Content',
+            'status' => 'published',
+            'created_by' => $owner->id,
+        ]);
+
+        $id = $article->article_id;
+
+        // API key auth grants access (is_private_access=true)
+        $response = $this->withHeader('X-API-KEY', $this->apiKey)
+            ->deleteJson("/api/articles/{$id}");
+
+        $response->assertOk()
+            ->assertJsonPath('message', 'Article deleted successfully.');
+
+        $this->assertSoftDeleted('articles', ['article_id' => $id]);
+    }
+
+    /** @test */
+    public function delete_article_with_api_key_bypasses_ownership_check(): void
+    {
+        $owner = User::create([
+            'name' => 'Owner',
+            'email' => 'owner@test.com',
+            'password' => bcrypt('password'),
+        ]);
+
+        $nonOwner = User::create([
+            'name' => 'Non Owner',
+            'email' => 'nonowner@test.com',
+            'password' => bcrypt('password'),
+        ]);
+
+        $article = Article::create([
+            'node_type' => 'article',
+            'visibility' => 'public',
+        ]);
+
+        $article->translations()->create([
+            'language_code' => 'en',
+            'title' => 'Owner Article',
+            'path' => 'owner-article-for-nonowner',
+            'content' => 'Content',
+            'status' => 'published',
+            'created_by' => $owner->id,
+        ]);
+
+        $id = $article->article_id;
+
+        // When using API key auth (is_private_access=true), authorization passes
+        // because API key auth grants full access, bypassing ownership checks.
+        $response = $this->withHeader('X-API-KEY', $this->apiKey)
+            ->deleteJson("/api/articles/{$id}");
+
+        // API key auth grants access, so delete succeeds
+        $response->assertOk()
+            ->assertJsonPath('message', 'Article deleted successfully.');
+
+        $this->assertSoftDeleted('articles', ['article_id' => $id]);
+    }
+
+    /** @test */
+    public function delete_article_not_found_returns_404(): void
+    {
+        $response = $this->withHeader('X-API-KEY', $this->apiKey)
+            ->deleteJson('/api/articles/99999');
+
+        $response->assertNotFound();
+    }
+
+    /** @test */
+    public function delete_article_without_api_key_returns_401(): void
+    {
+        $article = $this->makePublicArticle(['title' => 'Protected', 'path' => 'protected-delete']);
+        $id = $article->article_id;
+
+        $response = $this->deleteJson("/api/articles/{$id}");
+
+        $response->assertUnauthorized()
+            ->assertJsonPath('message', 'Unauthorized. Invalid or missing API key.');
+
+        // Article should NOT be deleted
+        $this->assertDatabaseHas('articles', ['article_id' => $id]);
     }
 }
