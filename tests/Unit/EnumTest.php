@@ -64,6 +64,14 @@ class EnumTest extends TestCase
         $this->assertEquals('user_agreement', (string) NodeType::USER_AGREEMENT->value);
     }
 
+    /** @test */
+    public function node_type_values_returns_all_enum_values(): void
+    {
+        $values = NodeType::values();
+
+        $this->assertEquals(['article', 'user_agreement'], $values);
+    }
+
     // =========================================================================
     // Visibility Enum Tests
     // =========================================================================
@@ -117,6 +125,14 @@ class EnumTest extends TestCase
     {
         $this->assertEquals('public', (string) Visibility::PUBLIC->value);
         $this->assertEquals('private', (string) Visibility::PRIVATE->value);
+    }
+
+    /** @test */
+    public function visibility_values_returns_all_enum_values(): void
+    {
+        $values = Visibility::values();
+
+        $this->assertEquals(['public', 'private'], $values);
     }
 
     // =========================================================================

@@ -41,7 +41,7 @@ class ArticleResource extends JsonResource
                     : $this->resource->visibility,
                 'translations' => $this->resource->translations->map(function ($translation) {
                     return [
-                        'translation_id' => $translation->translation_id,
+                        'translation_id' => $translation->article_translation_id,
                         'language_code'  => $translation->language_code,
                         'title'          => $translation->title,
                         'path'           => $translation->path,
