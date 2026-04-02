@@ -2,10 +2,11 @@
 
 namespace App\Enums;
 
-enum NodeType: string
+enum TranslationStatus: string
 {
-    case ARTICLE = 'article';
-    case USER_AGREEMENT = 'user_agreement';
+    case DRAFT = 'draft';
+    case PUBLISHED = 'published';
+    case UNPUBLISHED = 'unpublished';
 
     /**
      * Get the human-readable label for this enum case.
@@ -13,17 +14,18 @@ enum NodeType: string
     public function label(): string
     {
         return match ($this) {
-            self::ARTICLE => 'Article',
-            self::USER_AGREEMENT => 'User Agreement',
+            self::DRAFT => 'Draft',
+            self::PUBLISHED => 'Published',
+            self::UNPUBLISHED => 'Unpublished',
         };
     }
 
     /**
-     * Check if this is the ARTICLE case.
+     * Check if this is the PUBLISHED case.
      */
-    public function isArticle(): bool
+    public function isPublished(): bool
     {
-        return $this === self::ARTICLE;
+        return $this === self::PUBLISHED;
     }
 
     /**

@@ -25,4 +25,12 @@ enum Visibility: string
     {
         return $this === self::PUBLIC;
     }
+
+    /**
+     * Get all enum values as an array.
+     */
+    public static function values(): array
+    {
+        return array_column(self::cases(), 'value');
+    }
 }

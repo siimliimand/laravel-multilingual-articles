@@ -1,9 +1,9 @@
 ## 1. Enums
 
-- [ ] 1.1 Create `TranslationStatus` enum at `app/Enums/TranslationStatus.php` with cases `DRAFT`, `PUBLISHED`, `UNPUBLISHED` and methods `label()`, `isPublished()`, `values()`
-- [ ] 1.2 Add `values()` static method to `NodeType` enum returning `['article', 'user_agreement']`
-- [ ] 1.3 Add `values()` static method to `Visibility` enum returning `['public', 'private']`
-- [ ] 1.4 Update `ArticleTranslation` model to cast `status` to `TranslationStatus::class`
+- [x] 1.1 Create `TranslationStatus` enum at `app/Enums/TranslationStatus.php` with cases `DRAFT`, `PUBLISHED`, `UNPUBLISHED` and methods `label()`, `isPublished()`, `values()`
+- [x] 1.2 Add `values()` static method to `NodeType` enum returning `['article', 'user_agreement']`
+- [x] 1.3 Add `values()` static method to `Visibility` enum returning `['public', 'private']`
+- [x] 1.4 Update `ArticleTranslation` model to cast `status` to `TranslationStatus::class`
 
 ## 2. Database Indexes
 

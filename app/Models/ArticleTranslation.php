@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\TranslationStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -36,7 +37,7 @@ class ArticleTranslation extends Model
      * The attributes that should be cast.
      */
     protected $casts = [
-        'status' => 'string',
+        'status' => TranslationStatus::class,
         'unpublished_at' => 'datetime',
     ];
 
