@@ -2,6 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\NodeType;
+use App\Enums\TranslationStatus;
+use App\Enums\Visibility;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreArticleRequest extends FormRequest
@@ -21,8 +24,8 @@ class StoreArticleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'node_type'     => ['required', 'string', 'in:article,user_agreement'],
-            'visibility'    => ['required', 'string', 'in:public,private'],
+            'node_type'     => ['required', 'string', 'in:' . implode(',', NodeType::values())],
+            'visibility'    => ['required', 'string', 'in:' . implode(',', Visibility::values())],
             'language_code' => ['required', 'string', 'size:2', 'exists:site_languages,language_code'],
             'title'         => ['required', 'string', 'max:70'],
             'path'          => [
@@ -32,7 +35,7 @@ class StoreArticleRequest extends FormRequest
                 'unique:article_translations,path,NULL,article_translation_id,language_code,' . $this->input('language_code'),
             ],
             'content'       => ['required', 'string'],
-            'status'        => ['required', 'string', 'in:draft,published,unpublished'],
+            'status'        => ['required', 'string', 'in:' . implode(',', TranslationStatus::values())],
             'summary'       => ['sometimes', 'nullable', 'string', 'max:180'],
             'keywords'      => ['sometimes', 'nullable', 'string', 'max:255'],
         ];

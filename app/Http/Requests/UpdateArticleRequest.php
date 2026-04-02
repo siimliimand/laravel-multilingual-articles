@@ -2,6 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\NodeType;
+use App\Enums\TranslationStatus;
+use App\Enums\Visibility;
 use App\Models\Article;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -10,10 +13,21 @@ class UpdateArticleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
-     * Uses ArticlePolicy to check ownership via the first translation's created_by field.
+     * For API key auth, access is granted via the middleware.
+     * For user auth, uses ArticlePolicy to check ownership via the first translation's created_by field.
      */
     public function authorize(): bool
     {
+        // API key authentication grants access via middleware
+        if ($this->attributes->get('is_private_access')) {
+            return true;
+        }
+
+        // For user authentication, check policy
+        if (!$this->user()) {
+            return false;
+        }
+
         $article = Article::find($this->route('id'));
         return $article && $this->user()->can('update', $article);
     }
@@ -37,8 +51,8 @@ class UpdateArticleRequest extends FormRequest
         }
 
         return [
-            'node_type'     => ['sometimes', 'string', 'in:article,user_agreement'],
-            'visibility'    => ['sometimes', 'string', 'in:public,private'],
+            'node_type'     => ['sometimes', 'string', 'in:' . implode(',', NodeType::values())],
+            'visibility'    => ['sometimes', 'string', 'in:' . implode(',', Visibility::values())],
             'language_code' => ['sometimes', 'string', 'size:2', 'exists:site_languages,language_code'],
             'title'         => ['sometimes', 'string', 'max:70'],
             'path'          => [
@@ -50,7 +64,7 @@ class UpdateArticleRequest extends FormRequest
                     ->ignore($translationId, 'article_translation_id'),
             ],
             'content'       => ['sometimes', 'string'],
-            'status'        => ['sometimes', 'string', 'in:draft,published,unpublished'],
+            'status'        => ['sometimes', 'string', 'in:' . implode(',', TranslationStatus::values())],
             'summary'       => ['sometimes', 'nullable', 'string', 'max:180'],
             'keywords'      => ['sometimes', 'nullable', 'string', 'max:255'],
         ];

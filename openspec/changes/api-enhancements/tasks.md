@@ -25,12 +25,12 @@
 
 ## 5. Form Request Validation Updates
 
-- [ ] 5.1 Update `StoreArticleRequest` to use `NodeType::values()` for `node_type` validation
-- [ ] 5.2 Update `StoreArticleRequest` to use `Visibility::values()` for `visibility` validation
-- [ ] 5.3 Update `StoreArticleRequest` to use `TranslationStatus::values()` for `status` validation
-- [ ] 5.4 Update `UpdateArticleRequest` to use `NodeType::values()` for `node_type` validation
-- [ ] 5.5 Update `UpdateArticleRequest` to use `Visibility::values()` for `visibility` validation
-- [ ] 5.6 Update `UpdateArticleRequest` to use `TranslationStatus::values()` for `status` validation
+- [x] 5.1 Update `StoreArticleRequest` to use `NodeType::values()` for `node_type` validation
+- [x] 5.2 Update `StoreArticleRequest` to use `Visibility::values()` for `visibility` validation
+- [x] 5.3 Update `StoreArticleRequest` to use `TranslationStatus::values()` for `status` validation
+- [x] 5.4 Update `UpdateArticleRequest` to use `NodeType::values()` for `node_type` validation
+- [x] 5.5 Update `UpdateArticleRequest` to use `Visibility::values()` for `visibility` validation
+- [x] 5.6 Update `UpdateArticleRequest` to use `TranslationStatus::values()` for `status` validation
 
 ## 6. Controller Updates
 
